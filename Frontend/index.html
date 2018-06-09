@@ -1,0 +1,130 @@
+﻿
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>GitHub search</title>
+    <!-- Bootstrap core CSS -->
+    <link href="content/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link href="content/main.css" rel="stylesheet">
+    <link href="content/custom-search.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="navbar navbar-dark bg-dark box-shadow">
+                <div class="container d-flex justify-content-between">
+                    <a href="#" class="navbar-brand d-flex align-items-center">
+                        <img src="Images/github-logo.png" height="20" style="padding-right: 10px;" />
+                        <strong>GitHub search</strong>
+                    </a>
+                    <span v-cloak style="color:yellow">ClientId: {{clientId}}</span>
+                </div>
+            </div>
+        </header>
+
+        <main role="main">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nav-scroller py-1 mb-2">
+                            <nav class="nav d-flex">
+                                <a class="p-2" v-bind:class="[searchMode ? 'text-muted' : '']" href="#" v-on:click="searchMode=true">Search</a>
+                                <a class="p-2" v-bind:class="[!searchMode ? 'text-muted' : '']" href="#" v-on:click="searchMode=false">Favorites</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="search" v-if="searchMode">
+                <section class="jumbotron text-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="custom-search-input">
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control input-lg" placeholder="Search..." v-model="searchString" v-on:keyup.enter="search" />
+                                        <span class="input-group-btn">
+                                            <img src="Images/search-button.jpg" style="height:20px; margin-top:5px;" />
+                                        </span>
+                                    </div>
+                                </div>
+                                <div v-show="searching" v-cloak style="text-align:left;margin-top:10px;">Searching. Please wait...</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="album py-5 bg-light" v-cloak v-if="searchResults.count">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12" style="padding-bottom: 20px;">
+                                <span>
+                                    <b>Results found:</b> {{searchResults.count}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3" v-for="result in searchResults.repositories">
+                                <div class="card mb-3 box-shadow">
+                                    <a :href="result.owner.url" target="_blank" style="align-content:center; width:90%; margin: 10px auto 10px auto;"><img class="card-img-top" alt="Card image cap" :src="result.owner.avatarUrl"></a>
+                                    <div class="card-body">
+                                        <p class="card-text"><a target="_blank" :href="result.url"><b>{{result.name}}</b></a> by {{result.owner.name}}</p>
+                                        <p class="card-text">{{result.description}}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button v-if="result.isFavorite != true" type="button" class="btn btn-sm btn-outline-secondary" v-on:click="addToFavorites(result)">Add to favorites</button>
+                                                <span v-else style="font-weight: bold;color:red">Favorite</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else>
+                <div class="album py-5 bg-light" v-cloak>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3" v-for="result in favorites">
+                                <div class="card mb-3 box-shadow">
+                                    <a :href="result.owner.url" target="_blank" style="align-content:center; width:90%; margin: 10px auto auto auto;"><img class="card-img-top" alt="Card image cap" :src="result.owner.avatarUrl"></a>
+                                    <div class="card-body">
+                                        <p class="card-text"><a target="_blank" :href="result.url"><b>{{result.name}}</b></a> by {{result.owner.name}}</p>
+                                        <p class="card-text">{{result.description}}</p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"  v-on:click="removeFromFavorites(result.key)">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="text-muted">
+            <div class="container">
+                <p class="float-right">
+                    <a href="#">Back to top</a>
+                </p>
+                <p>&copy; 2018 GitHub search demo. All right reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
+    <script src="App/app.js"></script>
+</body>
+</html>
