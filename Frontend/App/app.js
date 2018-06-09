@@ -1,4 +1,4 @@
-﻿var apiBaseUrl = 'http://localhost/GitHubSearch/Backend/api/v1';
+﻿var apiBaseUrl = 'http://localhost/Backend/api/v1';
 
 var app = new Vue({
     el: '#app',
@@ -83,4 +83,4 @@ var app = new Vue({
         }, function (response) {
         });
     }
-});
+});
