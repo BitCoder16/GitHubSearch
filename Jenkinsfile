@@ -9,11 +9,23 @@ pipeline {
     stage('Build') {
       parallel {
         stage('Build server') {
+          agent {
+            docker {
+              image 'mhart/alpine-node'
+            }
+
+          }
           steps {
             echo 'building'
           }
         }
         stage('Build client') {
+          agent {
+            docker {
+              image 'mhart/alpine-node'
+            }
+
+          }
           steps {
             echo 'Building client'
           }
