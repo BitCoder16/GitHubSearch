@@ -40,6 +40,7 @@ pipeline {
     stage('Deploy') {
       steps {
         input(message: 'Continue to deploy', ok: 'Yes')
+        echo 'Deployed'
       }
     }
   }
